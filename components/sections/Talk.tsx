@@ -125,17 +125,8 @@ export function Talk() {
             />
             <div className="glow glow-brand absolute -right-16 -top-20 h-[220px] w-[220px] opacity-[0.28]" />
 
-            <div className="relative flex flex-1 flex-col p-[1.15rem_1.2rem_1.05rem] sm:p-[1.45rem_1.35rem_1.25rem]">
-              <div className="flex items-center gap-3">
-                <span className="grid h-[36px] w-[36px] flex-none place-items-center rounded-ico-sm bg-brand text-white shadow-[0_10px_24px_-12px_rgba(234,88,12,.9)]">
-                  <Icon name="zap" size={17} strokeWidth={2.2} />
-                </span>
-                <span className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-brand-light">
-                  05 +
-                </span>
-              </div>
-
-              <p className="mt-[0.95rem] text-[1.02rem] font-bold leading-[1.3] tracking-[-0.02em] text-white sm:mt-[1.15rem] sm:text-[1.12rem]">
+            <div className="relative flex flex-1 flex-col justify-center p-[1.35rem_1.2rem] sm:p-[1.6rem_1.35rem]">
+              <p className="text-[1.02rem] font-bold leading-[1.3] tracking-[-0.02em] text-white sm:text-[1.12rem]">
                 And many more actionable insights.
               </p>
               <p className="mt-[0.45rem] text-[0.82rem] leading-[1.5] text-white/60">
@@ -143,7 +134,7 @@ export function Talk() {
               </p>
 
               {/* a few of them, so "more" is a list rather than a promise */}
-              <div className="mt-[0.85rem] flex flex-wrap gap-[0.35rem]">
+              <div className="mt-[0.9rem] flex flex-wrap gap-[0.35rem]">
                 {TALK_MORE.map((m) => (
                   <span
                     key={m}
@@ -153,18 +144,6 @@ export function Talk() {
                   </span>
                 ))}
               </div>
-            </div>
-
-            <div className="relative mt-auto flex items-center gap-[0.6rem] border-t border-white/10 bg-white/[0.04] px-[1.25rem] py-[0.9rem] sm:px-[1.35rem] sm:py-[1rem]">
-              <span className="min-w-0 text-[0.8rem] font-bold leading-[1.3] tracking-[-0.015em] text-brand-light">
-                Ask it anything — it answers instantly
-              </span>
-              <Icon
-                name="arrowRight"
-                size={15}
-                strokeWidth={2.4}
-                className="ml-auto flex-none text-brand-light transition-transform duration-300 ease-smooth group-hover:translate-x-1"
-              />
             </div>
           </motion.div>
         </RevealGroup>
