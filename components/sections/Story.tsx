@@ -24,7 +24,6 @@ function Frame({ step, className }: { step: StoryStep; className?: string }) {
           sizes="(min-width: 1024px) 46vw, 92vw"
           placeholder="blur"
           blurDataURL={step.blur}
-          unoptimized
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/5 to-transparent" />

@@ -78,7 +78,6 @@ export function Waiters() {
                         sizes="(min-width: 1024px) 20vw, (min-width: 640px) 46vw, 92vw"
                         placeholder="blur"
                         blurDataURL={s.blur}
-                        unoptimized
                         // the wide phone/tablet crop keeps the subject of each
                         // frame in shot; the tall lg frame barely crops at all
                         style={{ "--crop": s.crop } as React.CSSProperties}

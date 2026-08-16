@@ -1,0 +1,6 @@
+# Source artwork — ~45 MB of full-resolution PNGs that the site never serves.
+# The shipped versions live in /public as tuned .webp files.
+Images/
+
+# Reference material, not part of the build
+docs/

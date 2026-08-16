@@ -215,7 +215,6 @@ export function Floor() {
                       sizes="(min-width: 1024px) 56vw, 100vw"
                       placeholder="blur"
                       blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAkAA4BaJQBOgCHw9XCl82AA/kVX6f1dbVhIT39jki8SatdaBYHjbVdqHOqAAAA="
-                      unoptimized
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
@@ -289,7 +288,6 @@ export function Floor() {
                       sizes="(min-width: 1024px) 40vw, 100vw"
                       placeholder="blur"
                       blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAAsAA4BaJYwCdADw3LiTgAD8eSH0gtkyi056LB01x9inobjNf035QUiiuxnYAAA="
-                      unoptimized
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />

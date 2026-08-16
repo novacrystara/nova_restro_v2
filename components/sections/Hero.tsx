@@ -110,14 +110,15 @@ export function Hero() {
               src="/hero_sec_1.webp"
               alt="The Nova-Restro owner dashboard open on a tablet in a restaurant dining room"
               fill
-              // eager, but no preload tag: phones never render this image
-              loading="eager"
-              fetchPriority="high"
-              // already a tuned webp — re-encoding it per breakpoint only adds latency
-              unoptimized
+              // the fold's LCP candidate on desktop: preloaded from <head> so
+              // the fetch starts before the parser reaches this node
+              priority
               placeholder="blur"
               blurDataURL="data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAADwAQCdASoQAAkAA4BaJQBOgB9vjgDoHYAA/vc5g9q+7IplP+2rCrm7t/jS1ce14FA83WZ3r52MLe1xNgf3gAAA"
-              sizes="(min-width: 1024px) 62vw, 100vw"
+              // …and below lg it is display:none, so the candidate resolves to
+              // the smallest variant in the srcset (~2 KB) instead of a
+              // full-width photograph nobody ever sees
+              sizes="(min-width: 1024px) 62vw, 5vw"
               className="object-cover object-right"
             />
             {/* blend the photo into the canvas at the very bottom of the fold */}
@@ -225,12 +226,13 @@ export function Hero() {
                   src="/tab_dashboard.webp"
                   alt="The Nova-Restro owner dashboard — sales, orders, customers and outlet performance on one screen"
                   fill
-                  loading="eager"
-                  fetchPriority="high"
-                  unoptimized
+                  // the fold's LCP candidate on a tablet — and, like the
+                  // photograph above, a 1px candidate on the widths where it
+                  // is display:none
+                  priority
                   placeholder="blur"
                   blurDataURL="data:image/webp;base64,UklGRiQAAABXRUJQVlA4IBgAAAAwAQCdASoQAAwAA4BaJaQAA3AA/vQ8QAA="
-                  sizes="100vw"
+                  sizes="(min-width: 1024px) 5vw, (min-width: 640px) 94vw, 5vw"
                   className="object-contain"
                 />
               </div>

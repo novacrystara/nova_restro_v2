@@ -367,7 +367,6 @@ export function Outlets() {
                       sizes="(min-width: 1024px) 46vw, 100vw"
                       placeholder="blur"
                       blurDataURL={out.blur}
-                      unoptimized
                       className="object-cover"
                     />
                   </motion.div>

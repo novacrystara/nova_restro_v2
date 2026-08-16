@@ -62,10 +62,11 @@ export function Manifesto() {
               src="/owner-guests.webp"
               alt="A restaurant owner standing in the doorway of their own room, talking to two guests on their way in"
               fill
-              sizes="(min-width: 1280px) 66vw, (min-width: 1024px) 62vw, 100vw"
+              // display:none below lg, where the framed copy below carries the
+              // photograph instead — so no phone ever pays for this one
+              sizes="(min-width: 1280px) 66vw, (min-width: 1024px) 62vw, 5vw"
               placeholder="blur"
               blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAAgABABsJZQAAujdUFftwAD+8yBBN+ZFOJMBRGXv+ciUoPJV9JxtCsGs35RAAAA="
-              unoptimized
               // pinned to the right edge on purpose: the guests run to the very
               // edge of the frame, so any crop has to come off the left — and
               // the left of this photograph is the dark cladding, which is
@@ -124,7 +125,6 @@ export function Manifesto() {
                     sizes="92vw"
                     placeholder="blur"
                     blurDataURL="data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADQAQCdASoQAAgABABsJZQAAujdUFftwAD+8yBBN+ZFOJMBRGXv+ciUoPJV9JxtCsGs35RAAAA="
-                    unoptimized
                     // same reasoning as the desktop frame — hold the right edge
                     className="object-cover object-[88%_45%]"
                   />
