@@ -2,31 +2,45 @@
 
 import { motion } from "framer-motion";
 import { EASE, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/cn";
 import Icon from "@/components/ui/Icon";
 
 /* ---------------------------------------------------------------- data ---
-   A fictional guest, as the brief for this screen asks — nothing here is a
-   real person's record. */
+   A fictional customer base, as the brief for this screen asks — nothing here
+   is a real person's record. This is the manager's view: the whole base at a
+   glance, not one guest's profile. */
 
-const GUEST = {
-  initials: "AR",
-  name: "Anaya Raman",
-  since: "Regular · first visit March 2024",
-  tags: ["Top 10% by spend", "Prefers table 12", "No shellfish"],
-};
-
-const STATS = [
-  { k: "Visits", v: "34", s: "lifetime" },
-  { k: "Lifetime value", v: "£1,284", s: "projected" },
-  { k: "Average spend", v: "£41.70", s: "per cover" },
-  { k: "Last seen", v: "4 days", s: "ago · Sat dinner" },
+const SUMMARY = [
+  { k: "Active customers", v: "1,284", s: "last 90 days" },
+  { k: "Loyalty members", v: "862", s: "67% of the base" },
+  { k: "New this month", v: "186", s: "46 already back" },
+  { k: "Going quiet", v: "74", s: "no visit in 30 days" },
 ];
 
-const DISHES = [
-  { n: "Truffle arancini", c: 12, pct: 100 },
-  { n: "Sea bass, brown butter", c: 9, pct: 76 },
-  { n: "Negroni", c: 7, pct: 58 },
-  { n: "Basque cheesecake", c: 5, pct: 42 },
+type Tag = "vip" | "regular" | "new" | "risk";
+
+const TAG: Record<Tag, { label: string; cls: string }> = {
+  vip: { label: "VIP", cls: "border-brand-deep/25 bg-brand-wash text-brand-deep" },
+  regular: { label: "Regular", cls: "border-edge bg-canvas text-body" },
+  new: { label: "New", cls: "border-success-deep/25 bg-success-wash text-success-deep" },
+  risk: { label: "Going quiet", cls: "border-gold/40 bg-gold-wash text-gold-deep" },
+};
+
+const CUSTOMERS: {
+  i: string;
+  n: string;
+  tag: Tag;
+  visits: number;
+  last: string;
+  ltv: string;
+}[] = [
+  { i: "AR", n: "Anaya Raman", tag: "vip", visits: 34, last: "4 days ago", ltv: "£1,284" },
+  { i: "JO", n: "James Okafor", tag: "vip", visits: 28, last: "6 days ago", ltv: "£1,052" },
+  { i: "PN", n: "Priya Nair", tag: "regular", visits: 21, last: "2 days ago", ltv: "£864" },
+  { i: "TW", n: "Tom Whitfield", tag: "regular", visits: 17, last: "9 days ago", ltv: "£702" },
+  { i: "SM", n: "Sofia Marchetti", tag: "regular", visits: 14, last: "3 days ago", ltv: "£596" },
+  { i: "DC", n: "Daniel Cole", tag: "risk", visits: 11, last: "38 days ago", ltv: "£441" },
+  { i: "HB", n: "Hannah Beckett", tag: "new", visits: 3, last: "yesterday", ltv: "£128" },
 ];
 
 /**
@@ -121,7 +135,7 @@ function CohortChart() {
 
 /* ---------------------------------------------------------------- mock --- */
 
-/** The loyalty / CRM view, shown as a screen rather than described. */
+/** The loyalty / CRM view as the manager gets it — the whole base, ranked. */
 export function CustomerMock() {
   return (
     <div className="overflow-hidden border border-edge bg-canvas shadow-sm">
@@ -133,7 +147,7 @@ export function CustomerMock() {
           <i className="h-[7px] w-[7px] rounded-full bg-brand/60" />
         </span>
         <span className="min-w-0 truncate font-mono text-[0.58rem] uppercase tracking-[0.12em] text-muted sm:ml-1 sm:text-[0.64rem] sm:tracking-[0.14em]">
-          Loyalty · Guest profile
+          Loyalty · Customer base
         </span>
         <span className="ml-auto inline-flex flex-none items-center gap-1.5 border border-edge px-[0.5rem] py-[0.2rem] font-mono text-[0.55rem] uppercase tracking-[0.1em] text-body sm:px-[0.55rem] sm:text-[0.58rem]">
           <i className="h-1.5 w-1.5 rounded-full bg-brand" />
@@ -141,121 +155,122 @@ export function CustomerMock() {
         </span>
       </div>
 
-      <div className="grid gap-2.5 p-2.5 sm:gap-3.5 sm:p-4 lg:grid-cols-[1fr_1.08fr]">
-        {/* ---- the guest ---- */}
-        <div className="grid gap-2.5 sm:gap-3.5">
-          <div className={`${PANEL} p-3 sm:p-4`}>
-            <div className="flex items-center gap-3 sm:gap-3.5">
-              <span className="grid h-[44px] w-[44px] flex-none place-items-center rounded-ico bg-ink text-[0.95rem] font-extrabold tracking-[-0.02em] text-white sm:h-[52px] sm:w-[52px] sm:text-[1.02rem]">
-                {GUEST.initials}
+      <div className="grid min-w-0 gap-2 p-2 sm:gap-3.5 sm:p-4">
+        {/* ---- the base in four numbers ---- */}
+        <div className="grid min-w-0 grid-cols-2 gap-px border border-edge bg-edge lg:grid-cols-4">
+          {SUMMARY.map((s) => (
+            <div key={s.k} className="min-w-0 bg-surface p-[0.6rem_0.65rem] sm:p-[0.85rem_1rem]">
+              <span className="block text-[0.5rem] font-extrabold uppercase leading-[1.3] tracking-[0.06em] text-muted sm:text-[0.58rem] sm:tracking-[0.1em]">
+                {s.k}
               </span>
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                  <b className="text-[0.95rem] font-extrabold tracking-[-0.03em] sm:text-[1.02rem]">
-                    {GUEST.name}
-                  </b>
-                  <span className="inline-flex flex-none items-center gap-1 border border-brand-deep/25 bg-brand-wash px-[0.4rem] py-[0.1rem] text-[0.55rem] font-extrabold uppercase tracking-[0.1em] text-brand-deep sm:text-[0.58rem]">
-                    <Icon name="star" size={9} strokeWidth={2.6} />
-                    VIP
-                  </span>
-                </div>
-                <div className="mt-[0.15rem] text-[0.7rem] leading-[1.4] text-muted sm:truncate sm:text-[0.75rem]">
-                  {GUEST.since}
-                </div>
-              </div>
+              <b className="mt-[0.2rem] block text-[1.05rem] font-extrabold tabular-nums tracking-[-0.035em] text-ink sm:text-[1.3rem]">
+                {s.v}
+              </b>
+              <span className="block text-[0.58rem] leading-[1.35] text-muted sm:text-[0.66rem]">
+                {s.s}
+              </span>
             </div>
-
-            <div className="mt-3 flex flex-wrap gap-1.5">
-              {GUEST.tags.map((t) => (
-                <span
-                  key={t}
-                  className="border border-edge bg-canvas px-[0.45rem] py-[0.2rem] text-[0.62rem] font-semibold text-body sm:px-[0.5rem] sm:py-[0.22rem] sm:text-[0.66rem]"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
-
-            {/* gap-px over an edge bed — the same separator trick the panel
-                above this mock uses */}
-            <div className="mt-3 grid grid-cols-2 gap-px border border-edge bg-edge">
-              {STATS.map((s) => (
-                <div key={s.k} className="min-w-0 bg-surface p-[0.6rem_0.65rem] sm:p-[0.7rem_0.8rem]">
-                  <span className="block text-[0.52rem] font-extrabold uppercase tracking-[0.08em] text-muted sm:text-[0.56rem] sm:tracking-[0.1em]">
-                    {s.k}
-                  </span>
-                  <b className="mt-[0.2rem] block text-[0.95rem] font-extrabold tabular-nums tracking-[-0.03em] text-ink sm:text-[1.02rem]">
-                    {s.v}
-                  </b>
-                  <span className="block truncate text-[0.6rem] text-muted sm:text-[0.62rem]">
-                    {s.s}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className={`${PANEL} p-3 sm:p-4`}>
-            <PanelTitle meta="34 visits">Orders most often</PanelTitle>
-            <div className="grid gap-[0.65rem] sm:gap-[0.7rem]">
-              {DISHES.map((d, i) => (
-                <div key={d.n} className="grid grid-cols-[1fr_auto] items-center gap-2.5 sm:gap-3">
-                  <div className="min-w-0">
-                    <div className="mb-[0.32rem] truncate text-[0.72rem] font-semibold text-ink sm:text-[0.76rem]">
-                      {d.n}
-                    </div>
-                    <div className="h-[5px] w-full bg-canvas-2">
-                      <motion.span
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${d.pct}%` }}
-                        viewport={viewportOnce}
-                        transition={{ duration: 0.9, ease: EASE, delay: 0.15 + i * 0.08 }}
-                        style={{ opacity: 1 - i * 0.13 }}
-                        className="block h-full bg-[linear-gradient(90deg,#F97316,#EA580C)]"
-                      />
-                    </div>
-                  </div>
-                  <span className="flex-none font-mono text-[0.66rem] font-bold tabular-nums text-ink-3 sm:text-[0.7rem]">
-                    {d.c}×
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* ---- the cohort ---- */}
-        <div className="grid gap-2.5 sm:gap-3.5">
-          <div className={`${PANEL} p-3 sm:p-4`}>
-            <PanelTitle meta="8 months">Share of covers from returning guests</PanelTitle>
-            <CohortChart />
-          </div>
+        <div className="grid min-w-0 gap-2 sm:gap-3.5 lg:grid-cols-[1.12fr_0.88fr]">
+          {/* ---- the list itself ---- */}
+          <div className={`${PANEL} flex min-w-0 flex-col p-2.5 sm:p-4`}>
+            <PanelTitle meta="ranked by visits">Active customers</PanelTitle>
 
-          <div className={`${PANEL} flex flex-wrap items-center gap-3 p-3 sm:gap-4 sm:p-4`}>
-            <div className="min-w-0">
-              <span className="block text-[0.52rem] font-extrabold uppercase tracking-[0.08em] text-muted sm:text-[0.56rem] sm:tracking-[0.1em]">
-                This guest is worth
-              </span>
-              <b className="mt-[0.2rem] block text-[clamp(1.5rem,2.6vw,2rem)] font-black leading-[1] tracking-[-0.045em] text-ink">
-                £1,284
-              </b>
-              <span className="block text-[0.64rem] leading-[1.4] text-muted sm:text-[0.66rem]">
-                over a year — 31× a single £41.70 cover
-              </span>
+            <div className="grid min-w-0 gap-px border border-edge bg-edge">
+              {CUSTOMERS.map((c, i) => (
+                <motion.div
+                  key={c.n}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={viewportOnce}
+                  transition={{ duration: 0.4, ease: EASE, delay: 0.06 + i * 0.05 }}
+                  className="flex min-w-0 items-center gap-2 bg-surface p-[0.5rem_0.55rem] sm:gap-3 sm:p-[0.7rem_0.85rem]"
+                >
+                  <span className="grid h-[26px] w-[26px] flex-none place-items-center rounded-ico-sm bg-ink text-[0.56rem] font-extrabold tracking-[-0.01em] text-white sm:h-[34px] sm:w-[34px] sm:text-[0.68rem]">
+                    {c.i}
+                  </span>
+
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-1.5">
+                      <b className="min-w-0 truncate text-[0.74rem] font-bold tracking-[-0.02em] text-ink sm:text-[0.86rem]">
+                        {c.n}
+                      </b>
+                      <span
+                        className={cn(
+                          "hidden flex-none border px-[0.35rem] py-[0.08rem] text-[0.52rem] font-extrabold uppercase tracking-[0.08em] sm:inline-block sm:text-[0.55rem]",
+                          TAG[c.tag].cls,
+                        )}
+                      >
+                        {TAG[c.tag].label}
+                      </span>
+                    </span>
+                    {/* the phone gets the short form of the same line */}
+                    <span className="mt-[0.1rem] block truncate text-[0.6rem] text-muted sm:text-[0.68rem]">
+                      <b className="font-bold tabular-nums text-body">{c.visits}</b> visits ·{" "}
+                      <span className="hidden sm:inline">last seen </span>
+                      {c.last}
+                    </span>
+                  </span>
+
+                  <span className="flex-none text-right">
+                    <b className="block text-[0.74rem] font-extrabold tabular-nums tracking-[-0.02em] text-ink sm:text-[0.92rem]">
+                      {c.ltv}
+                    </b>
+                    <span className="hidden text-[0.6rem] text-muted sm:block">lifetime</span>
+                  </span>
+                </motion.div>
+              ))}
             </div>
 
-            {/* the chip drops onto its own line rather than shrinking the
-                number beside it */}
-            <div className="flex w-full items-center gap-2 border border-brand-deep/25 bg-brand-mist px-[0.7rem] py-[0.45rem] sm:ml-auto sm:w-auto sm:px-[0.75rem] sm:py-[0.5rem]">
-              <Icon
-                name="refresh"
-                size={15}
-                strokeWidth={2.2}
-                className="flex-none text-brand-deep"
-              />
-              <span className="text-[0.68rem] font-bold leading-[1.3] text-brand-deep sm:text-[0.7rem]">
-                Books again every 11 days
+            <div className="mt-2.5 flex flex-wrap items-center justify-between gap-2 border-t border-edge pt-2.5 sm:mt-3 sm:pt-3">
+              <span className="min-w-0 text-[0.62rem] text-muted sm:text-[0.7rem]">
+                Showing 7 of <b className="font-bold tabular-nums text-body">1,284</b> active
+                customers
               </span>
+              <span className="inline-flex flex-none items-center gap-1.5 border border-edge bg-canvas px-[0.5rem] py-[0.22rem] text-[0.6rem] font-bold text-body sm:px-[0.55rem] sm:py-[0.25rem] sm:text-[0.66rem]">
+                Every outlet
+                <Icon name="chevronRight" size={11} strokeWidth={2.6} />
+              </span>
+            </div>
+          </div>
+
+          {/* ---- how the base is moving ---- */}
+          <div className="flex min-w-0 flex-col gap-2 sm:gap-3.5">
+            <div className={`${PANEL} min-w-0 p-2.5 sm:p-4`}>
+              <PanelTitle meta="8 months">Share of covers from returning guests</PanelTitle>
+              <CohortChart />
+            </div>
+
+            <div
+              className={`${PANEL} flex min-w-0 flex-1 flex-wrap content-center items-center gap-3 p-2.5 sm:gap-4 sm:p-4`}
+            >
+              <div className="min-w-0">
+                <span className="block text-[0.52rem] font-extrabold uppercase tracking-[0.08em] text-muted sm:text-[0.56rem] sm:tracking-[0.1em]">
+                  This base is worth
+                </span>
+                <b className="mt-[0.2rem] block text-[clamp(1.5rem,2.6vw,2rem)] font-black leading-[1] tracking-[-0.045em] text-ink">
+                  £1.65M
+                </b>
+                <span className="block text-[0.64rem] leading-[1.4] text-muted sm:text-[0.66rem]">
+                  over a year — 1,284 guests × £1,284 each
+                </span>
+              </div>
+
+              {/* the chip drops onto its own line rather than shrinking the
+                  number beside it */}
+              <div className="flex w-full items-center gap-2 border border-brand-deep/25 bg-brand-mist px-[0.7rem] py-[0.45rem] sm:ml-auto sm:w-auto sm:px-[0.75rem] sm:py-[0.5rem]">
+                <Icon
+                  name="refresh"
+                  size={15}
+                  strokeWidth={2.2}
+                  className="flex-none text-brand-deep"
+                />
+                <span className="text-[0.68rem] font-bold leading-[1.3] text-brand-deep sm:text-[0.7rem]">
+                  A regular returns every 11 days
+                </span>
+              </div>
             </div>
           </div>
         </div>

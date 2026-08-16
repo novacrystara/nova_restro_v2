@@ -81,44 +81,45 @@ export function Customers() {
             {/* gap-px over an edge-coloured bed: perfect 1px separators at
                 every column count. The odd fifth tile widens at sm so the bed
                 never shows through an empty slot. */}
-            <RevealGroup
-              className="grid grid-cols-1 gap-px bg-edge sm:grid-cols-2 xl:grid-cols-5"
-              stagger={0.07}
-            >
+            {/* two-up from the smallest width: five full-width cards made this
+                section a scroll of its own on a phone */}
+            <RevealGroup className="grid grid-cols-2 gap-px bg-edge xl:grid-cols-5" stagger={0.07}>
               {CUSTOMER_STATS.map((c, i) => (
                 <div
                   key={c.k}
                   className={cn(
-                    "group relative flex flex-col bg-surface p-[1.35rem_1.25rem] transition-colors duration-300 hover:bg-brand-mist sm:p-[1.5rem_1.4rem]",
-                    i === CUSTOMER_STATS.length - 1 && "sm:col-span-2 xl:col-span-1",
+                    "group relative flex min-w-0 flex-col bg-surface p-[0.95rem_0.85rem] transition-colors duration-300 hover:bg-brand-mist sm:p-[1.5rem_1.4rem]",
+                    i === CUSTOMER_STATS.length - 1 && "col-span-2 xl:col-span-1",
                   )}
                 >
                   <Corners />
 
-                  <motion.div variants={riseIn} className="flex flex-1 flex-col">
-                    <div className="flex items-start justify-between gap-3">
-                      <span className="grid h-10 w-10 flex-none place-items-center rounded-ico border border-brand-deep/25 bg-brand-wash text-brand-deep transition-colors duration-300 group-hover:border-brand-deep/50">
-                        <Icon name={c.icon} size={19} />
+                  <motion.div variants={riseIn} className="flex min-w-0 flex-1 flex-col">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="grid h-8 w-8 flex-none place-items-center rounded-ico border border-brand-deep/25 bg-brand-wash text-brand-deep transition-colors duration-300 group-hover:border-brand-deep/50 sm:h-10 sm:w-10">
+                        <Icon name={c.icon} size={19} className="h-4 w-4 sm:h-[19px] sm:w-[19px]" />
                       </span>
-                      <span className="font-mono text-[0.62rem] font-bold tracking-[0.14em] text-muted/70">
+                      <span className="font-mono text-[0.58rem] font-bold tracking-[0.14em] text-muted/70 sm:text-[0.62rem]">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                     </div>
 
-                    <div className="mt-[1.15rem] text-[0.62rem] font-extrabold uppercase tracking-[0.12em] text-muted">
+                    <div className="mt-[0.8rem] text-[0.56rem] font-extrabold uppercase leading-[1.35] tracking-[0.1em] text-muted sm:mt-[1.15rem] sm:text-[0.62rem] sm:tracking-[0.12em]">
                       {c.k}
                     </div>
-                    <div className="mt-auto pt-[0.55rem] text-[clamp(1.6rem,2.5vw,2.05rem)] font-black leading-[1] tracking-[-0.045em] text-ink">
+                    <div className="mt-auto pt-[0.45rem] text-[clamp(1.35rem,2.5vw,2.05rem)] font-black leading-[1] tracking-[-0.045em] text-ink sm:pt-[0.55rem]">
                       {c.v}
                     </div>
-                    <div className="mt-[0.4rem] text-[0.74rem] font-medium text-muted">{c.s}</div>
+                    <div className="mt-[0.3rem] text-[0.66rem] font-medium leading-[1.4] text-muted sm:mt-[0.4rem] sm:text-[0.74rem]">
+                      {c.s}
+                    </div>
                   </motion.div>
                 </div>
               ))}
             </RevealGroup>
 
             {/* the screen those five numbers come from */}
-            <div className="border-t border-edge bg-surface-2 p-2.5 sm:p-4 md:p-[1.5rem]">
+            <div className="min-w-0 border-t border-edge bg-surface-2 p-2 sm:p-4 md:p-[1.5rem]">
               <CustomerMock />
             </div>
           </div>

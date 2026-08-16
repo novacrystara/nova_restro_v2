@@ -17,8 +17,15 @@ const nextConfig = {
       than the 1800px original. Trimmed to the widths this layout actually
       asks for — every extra entry is another variant to build on first hit.
     */
-    deviceSizes: [420, 640, 828, 1080, 1200, 1440, 1920],
+    deviceSizes: [420, 640, 828, 1080, 1200, 1440, 1920, 2560],
     imageSizes: [64, 128, 256, 384],
+
+    /*
+      The optimizer re-encodes everything at 75 unless the quality is both
+      asked for on the <Image> and allow-listed here. 90 exists for the dark
+      photographs — at 75 their shadow gradients turn to mush.
+    */
+    qualities: [75, 90],
 
     /*
       How long a built variant is kept in Next's own transform cache, so the

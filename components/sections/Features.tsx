@@ -14,21 +14,22 @@ import Icon from "@/components/ui/Icon";
  *
  * `lg` spans a six-column bed and every row adds up to six, so the dashed
  * rules stay continuous across the whole block: 4+2 / 2+2+2 / 3+3 / 2+2+2 /
- * 4+2. `sm` is the two-column bed underneath it. Anything three wide or more
+ * 2+2+2. `sm` is the two-column bed underneath it. Anything three wide or more
  * is treated as a feature tile and sets its title a size up.
  */
 const PLAN: { sm: 1 | 2; lg: 2 | 3 | 4 }[] = [
   { sm: 2, lg: 4 }, // Smart Table Ordering
+  { sm: 1, lg: 2 }, // AI Waiter
   { sm: 1, lg: 2 }, // Multiple Kitchen Displays
   { sm: 1, lg: 2 }, // Real-Time Order Tracking
   { sm: 1, lg: 2 }, // Intelligent Notifications
-  { sm: 1, lg: 2 }, // Table & Floor Management
+  { sm: 1, lg: 3 }, // Table & Floor Management
   { sm: 2, lg: 3 }, // Loyalty & Customer Intelligence
-  { sm: 1, lg: 3 }, // Card / Tap / Cash Payments
+  { sm: 1, lg: 2 }, // Card / Tap / Cash Payments
   { sm: 1, lg: 2 }, // Tips & Tronc
   { sm: 1, lg: 2 }, // Tax & Billing
   { sm: 1, lg: 2 }, // Outlet KPIs
-  { sm: 2, lg: 4 }, // Multi-Outlet Analytics
+  { sm: 1, lg: 2 }, // Multi-Outlet Analytics
   { sm: 2, lg: 2 }, // Sales Intelligence
 ];
 

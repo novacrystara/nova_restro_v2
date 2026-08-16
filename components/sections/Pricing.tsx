@@ -161,18 +161,72 @@ export function Pricing() {
           </motion.div>
         </div>
 
+        {/* ---- the last word ----
+             The page has been on white since the pricing plan; it closes on
+             ink so the final statement lands as a full stop, not as one more
+             panel. */}
         <Reveal>
-          <div className="relative mt-[clamp(36px,5vw,60px)] overflow-hidden rounded-none border border-edge bg-surface px-6 py-[clamp(32px,5vw,64px)] text-center">
-            <div className="glow glow-brand absolute left-1/2 top-[-120px] h-[300px] w-[380px] -translate-x-1/2 opacity-50" />
-            <div className="relative">
-              <h2 className="t-h1">
-                One plan. <span className="hl">Everything you need.</span>
+          <div className="relative mt-[clamp(36px,5vw,60px)] overflow-hidden rounded-none border border-ink bg-ink px-[clamp(18px,4vw,64px)] py-[clamp(40px,6vw,88px)] text-center text-white">
+            <div className="bg-dots bg-dots-brand absolute inset-0 opacity-[0.14]" />
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand/70 to-transparent"
+            />
+            <div className="glow glow-brand absolute left-1/2 top-[-180px] h-[420px] w-[560px] -translate-x-1/2 opacity-[0.32]" />
+            <div className="glow glow-brand absolute -bottom-52 left-1/2 h-[360px] w-[720px] -translate-x-1/2 opacity-[0.18]" />
+
+            <div className="relative mx-auto max-w-[900px]">
+              <span className="inline-flex items-center gap-[0.55rem] border border-white/[0.14] bg-white/[0.05] px-[0.8rem] py-[0.35rem] text-[0.62rem] font-bold uppercase tracking-[0.18em] text-white/65">
+                <span className="h-1.5 w-1.5 flex-none rounded-full bg-brand-light" />
+                One plan
+              </span>
+
+              <h2 className="t-h1 mt-[1.3rem] text-white">
+                One plan. <span className="text-brand-light">Everything you need.</span>
               </h2>
-              <p className="lead mx-auto mt-[1.4rem] max-w-[48ch]">
-                Every software feature, every outlet, every user — for £2 a day. You only add the AI
-                Waiter if you want it.
+
+              {/* the price, as one premium line rather than a sentence */}
+              <div className="mt-[1.7rem] inline-flex flex-wrap items-center justify-center gap-x-[0.9rem] gap-y-2 border border-white/[0.14] bg-white/[0.05] px-[1.1rem] py-[0.75rem] sm:px-[1.4rem] sm:py-[0.9rem]">
+                {/* the old number stays on the line, struck through, exactly as
+                    it is on the plan above */}
+                <span className="relative whitespace-nowrap text-[1.15rem] font-black leading-none tracking-[-0.03em] text-white/45 sm:text-[1.35rem]">
+                  {PLAN_PRICE.was}
+                  <span
+                    aria-hidden
+                    className="absolute inset-x-[-4px] top-1/2 h-[3px] -translate-y-1/2 -rotate-[8deg] bg-destructive-light"
+                  />
+                  <span className="sr-only"> was the old price, now </span>
+                </span>
+                <span className="whitespace-nowrap text-[2.1rem] font-black leading-none tracking-[-0.05em] text-white sm:text-[2.6rem]">
+                  {PLAN_PRICE.now}
+                </span>
+                <span className="text-left text-[0.78rem] font-bold leading-[1.25] text-white/60 sm:text-[0.84rem]">
+                  {PLAN_PRICE.unit.split(", ").map((l) => (
+                    <span key={l} className="block">
+                      {l}
+                    </span>
+                  ))}
+                </span>
+              </div>
+
+              <p className="mx-auto mt-[1.3rem] max-w-[46ch] text-[0.95rem] leading-[1.6] text-white/70 sm:text-[1.02rem]">
+                Every software feature, every outlet, every user. You only add the AI Waiter and
+                hardware if you want them.
               </p>
-              <div className="mt-[2.2rem] flex flex-wrap justify-center gap-[0.85rem]">
+
+              <div
+                aria-hidden
+                className="mx-auto my-[clamp(32px,5vw,58px)] h-px w-full max-w-[520px] bg-gradient-to-r from-transparent via-white/25 to-transparent"
+              />
+
+              <h2 className="text-[clamp(1.75rem,5.6vw,4.2rem)] font-black leading-[1.02] tracking-[-0.05em] text-white">
+                Run Your Restaurant.
+              </h2>
+              <h2 className="text-[clamp(1.75rem,5.6vw,4.2rem)] font-black leading-[1.02] tracking-[-0.05em] text-brand-light">
+                Don&apos;t Let Your Restaurant Run You.
+              </h2>
+
+              <div className="mt-[clamp(26px,3.4vw,40px)] flex flex-col items-stretch justify-center gap-[0.85rem] sm:flex-row sm:items-center">
                 <Button href="#action" variant="primary" size="lg">
                   See Nova-Restro in Action
                   <Icon
@@ -182,7 +236,7 @@ export function Pricing() {
                     className="transition-transform duration-300 ease-smooth group-hover/btn:translate-x-1"
                   />
                 </Button>
-                <DemoButton variant="outline" size="lg">
+                <DemoButton variant="light" size="lg">
                   Book a Demo
                 </DemoButton>
               </div>

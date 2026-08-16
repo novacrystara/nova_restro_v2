@@ -40,6 +40,30 @@ function Frame({ step, className }: { step: StoryStep; className?: string }) {
   );
 }
 
+/**
+ * The escalation rule, as an alarm chip. Amber is the site's "a person is
+ * waiting" colour, and it is the only thing on this section that blinks — so
+ * it reads as the system raising its hand, not as decoration.
+ */
+function AlarmChip({ text }: { text: string }) {
+  return (
+    <span className="ml-auto inline-flex flex-none items-center gap-[0.5rem] whitespace-nowrap border border-gold/45 bg-gold-wash px-[0.55rem] py-[0.3rem] shadow-xs">
+      <span className="relative grid h-[15px] w-[15px] flex-none place-items-center text-gold-deep">
+        <Icon name="bell" size={13} strokeWidth={2.4} className="animate-beep" />
+        <span
+          aria-hidden
+          className="absolute -right-[2px] -top-[2px] h-[5px] w-[5px] rounded-full bg-destructive"
+        >
+          <span className="absolute inset-0 animate-ping2 rounded-full bg-destructive/70" />
+        </span>
+      </span>
+      <span className="font-mono text-[0.55rem] font-bold uppercase tracking-[0.08em] text-gold-deep sm:text-[0.6rem] sm:tracking-[0.1em]">
+        {text}
+      </span>
+    </span>
+  );
+}
+
 function Step({
   step,
   index,
@@ -96,11 +120,12 @@ function Step({
           over. */}
       <div className="sm:grid sm:grid-cols-2 sm:items-center sm:gap-[clamp(20px,3vw,32px)] lg:block">
         <div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
             <span className="font-mono text-[0.72rem] font-bold tracking-[0.12em] text-brand-deep">
               {step.n}
             </span>
             <span aria-hidden className="h-px flex-1 bg-edge lg:hidden" />
+            {step.alert && <AlarmChip text={step.alert} />}
           </div>
 
           <h3 className="mt-[0.7rem] text-[clamp(1.35rem,3.1vw,2.35rem)] font-extrabold leading-[1.1] tracking-[-0.04em]">

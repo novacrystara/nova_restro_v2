@@ -9,6 +9,7 @@ import Icon, { type IconName } from "@/components/ui/Icon";
  * it is a diagram, not a demo.
  */
 const MODULES: { icon: IconName; label: string; pos?: boolean }[] = [
+  { icon: "serving", label: "AI waiter" },
   { icon: "table", label: "Table ordering" },
   { icon: "kds", label: "Kitchen display" },
   { icon: "floorplan", label: "Floor & tables" },
@@ -61,7 +62,7 @@ export function PositionBand() {
                 Nova-Restro
               </span>
               <span className="ml-auto font-mono text-[0.6rem] uppercase tracking-[0.12em] text-white/30">
-                6 modules
+                {MODULES.length} modules
               </span>
             </div>
 
@@ -93,7 +94,7 @@ export function PositionBand() {
                   </span>
                   {m.pos && (
                     <span className="ml-auto flex-none border border-brand/40 px-[0.5rem] py-[0.15rem] font-mono text-[0.58rem] uppercase tracking-[0.1em] text-brand-light">
-                      1 of 6
+                      1 of {MODULES.length}
                     </span>
                   )}
                 </li>

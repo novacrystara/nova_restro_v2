@@ -21,7 +21,7 @@ export function Waiters() {
             <h2 className="display">Your tables take the order.</h2>
           </Reveal>
           <Reveal delay={0.16}>
-            <h2 className="display text-brand-deep">Your waiters take care of the customer.</h2>
+            <h2 className="display text-brand-deep">Your waiters take care of the customers.</h2>
           </Reveal>
         </div>
 
@@ -110,11 +110,46 @@ export function Waiters() {
              the three lines it came from. */}
         <Reveal>
           <div className="relative mt-[clamp(40px,5vw,68px)] overflow-hidden border border-edge bg-surface shadow-sm">
-            <div className="glow glow-brand absolute -left-28 -top-36 h-[340px] w-[340px] opacity-[0.28]" />
+            {/* the glow follows the total, which now sits on the right */}
+            <div className="glow glow-brand absolute -right-28 -top-36 h-[340px] w-[340px] opacity-[0.28]" />
 
-            <div className="relative grid lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+            {/* the working reads first, the total lands on the right */}
+            <div className="relative grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
+              {/* the working */}
+              <div className="border-b border-edge p-[clamp(24px,3.4vw,44px)] lg:border-b-0 lg:border-r">
+                <p className="text-[clamp(1.02rem,1.7vw,1.35rem)] font-semibold leading-[1.5] tracking-[-0.02em] text-ink">
+                  With just 50 orders a day, manual order-taking and chasing quietly eats a full
+                  shift of your floor team&apos;s time.
+                </p>
+
+                <dl className="mt-[1.6rem] border-t border-edge">
+                  {[
+                    { k: "Orders taken by hand", v: "50", sub: "a day" },
+                    { k: "Global average order time", v: "≈ 10 – 15 min", sub: "each" },
+                    { k: "Counted at the lower end", v: "10 min", sub: "each" },
+                  ].map((r) => (
+                    <div
+                      key={r.k}
+                      className="flex items-baseline justify-between gap-4 border-b border-edge py-[0.85rem]"
+                    >
+                      <dt className="text-[0.85rem] text-body">{r.k}</dt>
+                      <dd className="flex flex-none items-baseline gap-[0.35rem]">
+                        <span className="font-mono text-[0.95rem] font-bold text-ink">{r.v}</span>
+                        <span className="text-[0.72rem] text-muted">{r.sub}</span>
+                      </dd>
+                    </div>
+                  ))}
+                  <div className="flex items-baseline justify-between gap-4 bg-brand-mist px-[0.9rem] py-[0.95rem]">
+                    <dt className="text-[0.85rem] font-bold text-ink">Lost, every day</dt>
+                    <dd className="font-mono text-[1.05rem] font-extrabold tracking-[-0.02em] text-brand-deep">
+                      ≈ 500 min
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+
               {/* the total */}
-              <div className="flex flex-col justify-between gap-6 border-b border-edge p-[clamp(24px,3.4vw,44px)] lg:border-b-0 lg:border-r">
+              <div className="flex flex-col justify-between gap-6 p-[clamp(24px,3.4vw,44px)]">
                 <Eyebrow>The arithmetic</Eyebrow>
                 <div>
                   <div className="flex items-baseline gap-[0.35rem]">
@@ -131,42 +166,9 @@ export function Waiters() {
                   </p>
                   <span className="mt-[1.1rem] inline-flex items-center gap-2 border border-edge bg-canvas px-[0.7rem] py-[0.4rem] font-mono text-[0.72rem] font-semibold text-ink-3">
                     <Icon name="clock" size={13} strokeWidth={2.2} className="text-brand-deep" />
-                    8 h 20 m
+                    ≈ 8 h 20 m
                   </span>
                 </div>
-              </div>
-
-              {/* the working */}
-              <div className="p-[clamp(24px,3.4vw,44px)]">
-                <p className="text-[clamp(1.02rem,1.7vw,1.35rem)] font-semibold leading-[1.5] tracking-[-0.02em] text-ink">
-                  With just 50 orders a day, manual order-taking and chasing quietly eats a full
-                  shift of your floor team&apos;s time.
-                </p>
-
-                <dl className="mt-[1.6rem] border-t border-edge">
-                  {[
-                    { k: "Orders taken by hand", v: "50", sub: "a day" },
-                    { k: "Walked to the table & back", v: "6 min", sub: "each" },
-                    { k: "Chasing the kitchen for updates", v: "4 min", sub: "each" },
-                  ].map((r) => (
-                    <div
-                      key={r.k}
-                      className="flex items-baseline justify-between gap-4 border-b border-edge py-[0.85rem]"
-                    >
-                      <dt className="text-[0.85rem] text-body">{r.k}</dt>
-                      <dd className="flex flex-none items-baseline gap-[0.35rem]">
-                        <span className="font-mono text-[0.95rem] font-bold text-ink">{r.v}</span>
-                        <span className="text-[0.72rem] text-muted">{r.sub}</span>
-                      </dd>
-                    </div>
-                  ))}
-                  <div className="flex items-baseline justify-between gap-4 bg-brand-mist px-[0.9rem] py-[0.95rem]">
-                    <dt className="text-[0.85rem] font-bold text-ink">Lost, every day</dt>
-                    <dd className="font-mono text-[1.05rem] font-extrabold tracking-[-0.02em] text-brand-deep">
-                      500 min
-                    </dd>
-                  </div>
-                </dl>
               </div>
             </div>
           </div>

@@ -4,13 +4,7 @@ import { FOOTER_COLUMNS } from "@/lib/data";
 import Reveal from "@/components/ui/Reveal";
 import Button from "@/components/ui/Button";
 import DemoLink from "@/components/demo/DemoLink";
-import Icon, { type IconName } from "@/components/ui/Icon";
-
-const SOCIALS: { name: IconName; label: string; href: string }[] = [
-  { name: "x", label: "X", href: "#top" },
-  { name: "linkedin", label: "LinkedIn", href: "#top" },
-  { name: "instagram", label: "Instagram", href: "#top" },
-];
+import Icon from "@/components/ui/Icon";
 
 const footerLink =
   "block w-full py-[0.35rem] text-[0.88rem] text-white/70 transition-colors duration-200 hover:text-brand-light";
@@ -94,22 +88,10 @@ export function Footer() {
           </div>
         </Reveal>
 
-        <div className="mt-[clamp(36px,5vw,60px)] flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-[0.78rem] text-white/40">
+        <div className="mt-[clamp(36px,5vw,60px)] border-t border-white/10 pt-6 text-[0.78rem] text-white/40">
           <span>
             © {year} Nova-Restro. Run your restaurant. Don&apos;t let your restaurant run you.
           </span>
-          <div className="flex gap-2">
-            {SOCIALS.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                aria-label={s.label}
-                className="grid h-[34px] w-[34px] place-items-center rounded-none border border-white/[0.12] text-white/60 transition-colors duration-200 hover:border-brand-light hover:bg-brand-light hover:text-ink"
-              >
-                <Icon name={s.name} size={15} strokeWidth={2} />
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </footer>

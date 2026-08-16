@@ -84,7 +84,7 @@ function StepLabel({ n, children }: { n: string; children: React.ReactNode }) {
       <span className="grid h-[22px] w-[22px] flex-none place-items-center bg-brand font-mono text-[0.7rem] font-bold text-white">
         {n}
       </span>
-      <span className="text-[0.72rem] font-extrabold uppercase tracking-[0.14em] text-white/70">
+      <span className="text-[0.76rem] font-extrabold uppercase tracking-[0.14em] text-white/85">
         {children}
       </span>
     </div>
@@ -192,11 +192,11 @@ export function RoiCalculator() {
           <div className="text-[1.2rem] font-extrabold tracking-[-0.03em] text-white sm:text-[1.35rem]">
             ROI calculator
           </div>
-          <div className="text-[0.86rem] text-white/50">
-            What £2 a day gives back, in your own numbers
-          </div>
+          {/* the framing line lives on the orange block now, where the answer
+              actually lands */}
+          <div className="text-[0.88rem] text-white/85">Your own numbers, live</div>
         </div>
-        <span className="ml-auto hidden items-center gap-2 border border-white/15 px-[0.8rem] py-[0.4rem] font-mono text-[0.68rem] uppercase tracking-[0.12em] text-white/50 sm:inline-flex">
+        <span className="ml-auto hidden items-center gap-2 border border-white/25 px-[0.8rem] py-[0.4rem] font-mono text-[0.7rem] uppercase tracking-[0.12em] text-white/75 sm:inline-flex">
           <i className="h-1.5 w-1.5 rounded-full bg-brand" />
           Live estimate
         </span>
@@ -221,7 +221,7 @@ export function RoiCalculator() {
                     <span className="flex-none font-mono text-[1.15rem] font-extrabold tabular-nums text-brand-light">
                       {f.print(value)}
                     </span>
-                    <span className="w-full text-[0.76rem] text-white/40">{f.hint}</span>
+                    <span className="w-full text-[0.82rem] text-white/85">{f.hint}</span>
                   </span>
                   <input
                     type="range"
@@ -241,7 +241,7 @@ export function RoiCalculator() {
 
           {/* the one line that makes every number on the right legible */}
           <div className={`${PANEL} mt-6 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 p-[0.85rem_1rem]`}>
-            <span className="text-[0.82rem] font-bold text-white/55">That is a month of</span>
+            <span className="text-[0.88rem] font-bold text-white/85">That is a month of</span>
             <span className="font-mono text-[1rem] font-bold tabular-nums text-white">
               {num(r.ordersMonth)} orders · {money(r.revenueMonth)}
             </span>
@@ -262,11 +262,12 @@ export function RoiCalculator() {
                   <Icon name={l.icon} size={16} strokeWidth={2.2} />
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block text-[0.92rem] font-bold leading-[1.3] tracking-[-0.02em] text-white">
+                  {/* the label carries the brand, the arithmetic under it is
+                      pure white — on navy that is the pair that stays legible */}
+                  <span className="block text-[0.92rem] font-bold leading-[1.3] tracking-[-0.02em] text-brand-light">
                     {l.k}
                   </span>
-                  {/* the sum itself, in the reader's own numbers */}
-                  <span className="mt-[0.15rem] block font-mono text-[0.72rem] leading-[1.4] text-white/45">
+                  <span className="mt-[0.2rem] block font-mono text-[0.78rem] leading-[1.45] text-white">
                     {l.working}
                   </span>
                 </span>
@@ -292,19 +293,19 @@ export function RoiCalculator() {
           <div className="mt-6">
             <StepLabel n="3">What it costs you</StepLabel>
             <div className={`${PANEL} mt-4 flex items-center gap-3 p-[0.8rem_0.85rem] sm:gap-3.5 sm:p-[0.9rem_1rem]`}>
-              <span className="grid h-9 w-9 flex-none place-items-center rounded-ico-sm border border-white/10 bg-white/[0.05] text-white/50">
+              <span className="grid h-9 w-9 flex-none place-items-center rounded-ico-sm border border-white/15 bg-white/[0.07] text-white/75">
                 <Icon name="card" size={16} strokeWidth={2.2} />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[0.92rem] font-bold tracking-[-0.02em] text-white">
+                <span className="block text-[0.92rem] font-bold tracking-[-0.02em] text-brand-light">
                   Nova-Restro
                 </span>
-                <span className="mt-[0.15rem] block font-mono text-[0.72rem] text-white/45">
+                <span className="mt-[0.2rem] block font-mono text-[0.78rem] text-white">
                   £{ROI_MODEL.pricePerOutletPerDay} × {v.outlets}{" "}
                   {v.outlets === 1 ? "outlet" : "outlets"} × {ROI_MODEL.daysPerMonth} days
                 </span>
               </span>
-              <span className="flex-none font-mono text-[1.05rem] font-bold tabular-nums text-white/60">
+              <span className="flex-none font-mono text-[1.05rem] font-bold tabular-nums text-white">
                 −{money(r.cost)}
               </span>
             </div>
@@ -312,8 +313,15 @@ export function RoiCalculator() {
 
           {/* ---- the number the whole thing is for ---- */}
           <div className="mt-4 flex flex-wrap items-end justify-between gap-x-5 gap-y-4 bg-[linear-gradient(135deg,#EA580C,#B93C08)] p-[1.1rem_1.15rem] shadow-[0_18px_44px_-18px_rgba(234,88,12,.7)] sm:p-[1.35rem_1.5rem]">
+            {/* what the whole calculator is answering, sitting on the answer */}
+            <div className="w-full border-b border-white/25 pb-[0.85rem]">
+              <span className="block text-[0.95rem] font-bold leading-[1.4] tracking-[-0.02em] text-white sm:text-[1.02rem]">
+                What £2 a day gives back, in your own numbers
+              </span>
+            </div>
+
             <div className="min-w-0">
-              <span className="block text-[0.72rem] font-extrabold uppercase tracking-[0.14em] text-white/70">
+              <span className="block text-[0.74rem] font-extrabold uppercase tracking-[0.14em] text-white/85">
                 You keep, every month
               </span>
               <motion.b
@@ -325,7 +333,7 @@ export function RoiCalculator() {
               >
                 {money(r.net)}
               </motion.b>
-              <span className="mt-[0.3rem] block font-mono text-[0.76rem] text-white/70">
+              <span className="mt-[0.35rem] block font-mono text-[0.82rem] font-semibold text-white/90">
                 {money(r.gain)} back − {money(r.cost)} paid
               </span>
             </div>
@@ -349,16 +357,16 @@ export function RoiCalculator() {
       {/* ---- the part that isn't money ---- */}
       <div className="relative flex flex-col gap-3 border-t border-white/10 p-[1.1rem] sm:flex-row sm:items-center sm:gap-5 sm:p-[1.2rem_1.8rem]">
         <span className="flex items-start gap-3 sm:items-center">
-          <span className="grid h-9 w-9 flex-none place-items-center rounded-ico-sm border border-white/10 bg-white/[0.05] text-brand-light">
+          <span className="grid h-9 w-9 flex-none place-items-center rounded-ico-sm border border-white/15 bg-white/[0.07] text-brand-light">
             <Icon name="serving" size={16} strokeWidth={2.2} />
           </span>
-          <span className="text-[0.88rem] leading-[1.5] text-white/60">
+          <span className="text-[0.92rem] leading-[1.55] text-white/85">
             <b className="text-white">Not counted above:</b> those {num(r.hoursSaved)} hours stop
             being spent walking to the kitchen and start being spent with guests — the part that
             shows up in your reviews, not your ledger.
           </span>
         </span>
-        <span className="flex-none text-[0.76rem] leading-[1.5] text-white/35 sm:ml-auto sm:max-w-[22ch] sm:text-right">
+        <span className="flex-none text-[0.8rem] leading-[1.5] text-white/70 sm:ml-auto sm:max-w-[22ch] sm:text-right">
           An estimate. Every line shows the sum it came from.
         </span>
       </div>

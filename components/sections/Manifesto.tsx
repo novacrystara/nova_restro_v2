@@ -7,8 +7,6 @@ import { EASE, viewportOnce } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
-import Button from "@/components/ui/Button";
-import Icon from "@/components/ui/Icon";
 
 /**
  * One manifesto line. Deliberately static — no scroll-linked fading — so the
@@ -133,34 +131,6 @@ export function Manifesto() {
               </figure>
             </Reveal>
           </div>
-        </div>
-      </div>
-
-      <div className="wrap relative">
-        <div className="relative mt-[clamp(48px,7vw,96px)] text-center">
-          <Reveal>
-            <h2 className="text-[clamp(2rem,6.5vw,5.5rem)] font-black leading-[0.98] tracking-[-0.05em] text-white">
-              Run Your Restaurant.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <h2 className="text-[clamp(2rem,6.5vw,5.5rem)] font-black leading-[0.98] tracking-[-0.05em] text-brand-light">
-              Don&apos;t Let Your Restaurant Run You.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.2}>
-            <div className="mt-[2.6rem]">
-              <Button href="#action" variant="primary" size="lg">
-                See Nova-Restro in Action
-                <Icon
-                  name="arrowRight"
-                  size={17}
-                  strokeWidth={2.4}
-                  className="transition-transform duration-300 ease-smooth group-hover/btn:translate-x-1"
-                />
-              </Button>
-            </div>
-          </Reveal>
         </div>
       </div>
     </section>

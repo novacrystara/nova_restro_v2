@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { TALK_QUESTIONS } from "@/lib/data";
-import { riseIn, viewportOnce } from "@/lib/motion";
+import { TALK_MORE, TALK_QUESTIONS } from "@/lib/data";
+import { EASE, riseIn, viewportOnce } from "@/lib/motion";
 import Reveal, { RevealGroup } from "@/components/ui/Reveal";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import Eyebrow from "@/components/ui/Eyebrow";
@@ -108,6 +108,65 @@ export function Talk() {
               </SpotlightCard>
             );
           })}
+
+          {/* ---- the fifth tile closes the row ----
+               Four questions, then the point: the list does not end here. It
+               is deliberately the one dark card in the row, so it reads as a
+               conclusion rather than a fifth question with a stubby answer. */}
+          <motion.div
+            variants={riseIn}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="group relative flex flex-col overflow-hidden border border-ink bg-ink text-white shadow-md transition-shadow duration-300 hover:shadow-lg sm:col-span-2 sm:min-h-[240px] xl:col-span-1"
+          >
+            <div className="bg-dots bg-dots-brand absolute inset-0 opacity-[0.16]" />
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand/70 to-transparent"
+            />
+            <div className="glow glow-brand absolute -right-16 -top-20 h-[220px] w-[220px] opacity-[0.28]" />
+
+            <div className="relative flex flex-1 flex-col p-[1.15rem_1.2rem_1.05rem] sm:p-[1.45rem_1.35rem_1.25rem]">
+              <div className="flex items-center gap-3">
+                <span className="grid h-[36px] w-[36px] flex-none place-items-center rounded-ico-sm bg-brand text-white shadow-[0_10px_24px_-12px_rgba(234,88,12,.9)]">
+                  <Icon name="zap" size={17} strokeWidth={2.2} />
+                </span>
+                <span className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-brand-light">
+                  05 +
+                </span>
+              </div>
+
+              <p className="mt-[0.95rem] text-[1.02rem] font-bold leading-[1.3] tracking-[-0.02em] text-white sm:mt-[1.15rem] sm:text-[1.12rem]">
+                And many more actionable insights.
+              </p>
+              <p className="mt-[0.45rem] text-[0.82rem] leading-[1.5] text-white/60">
+                The same answer, for every other part of the day:
+              </p>
+
+              {/* a few of them, so "more" is a list rather than a promise */}
+              <div className="mt-[0.85rem] flex flex-wrap gap-[0.35rem]">
+                {TALK_MORE.map((m) => (
+                  <span
+                    key={m}
+                    className="border border-white/[0.14] bg-white/[0.06] px-[0.45rem] py-[0.22rem] text-[0.66rem] font-semibold text-white/75 transition-colors duration-300 group-hover:border-white/25 group-hover:text-white"
+                  >
+                    {m}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative mt-auto flex items-center gap-[0.6rem] border-t border-white/10 bg-white/[0.04] px-[1.25rem] py-[0.9rem] sm:px-[1.35rem] sm:py-[1rem]">
+              <span className="min-w-0 text-[0.8rem] font-bold leading-[1.3] tracking-[-0.015em] text-brand-light">
+                Ask it anything — it answers instantly
+              </span>
+              <Icon
+                name="arrowRight"
+                size={15}
+                strokeWidth={2.4}
+                className="ml-auto flex-none text-brand-light transition-transform duration-300 ease-smooth group-hover:translate-x-1"
+              />
+            </div>
+          </motion.div>
         </RevealGroup>
 
         <motion.div
@@ -162,7 +221,9 @@ export function Talk() {
               Always watching
             </span>
             <span className="mx-auto mt-[0.9rem] block h-px w-10 bg-white/15" />
-            <span className="mt-[0.7rem] block font-mono text-[0.6rem] tracking-[0.1em] text-white/35">
+            {/* the proof line — the point of the whole panel, so it reads at
+                full white rather than sinking into the ink */}
+            <span className="mt-[0.7rem] block font-mono text-[0.8rem] font-semibold tracking-[0.06em] text-white sm:text-[0.86rem]">
               5 outlets · 0 blind spots
             </span>
           </div>

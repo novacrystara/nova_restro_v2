@@ -15,13 +15,6 @@ export const HERO_META: { icon: IconName; title: string; sub?: string }[] = [
   { icon: "building", title: "Unlimited", sub: "outlets" },
 ];
 
-/** Credentials strip that closes the hero. */
-export const TRUST_BADGES: { icon: IconName; label: string }[] = [
-  { icon: "building", label: "UK Registered Company" },
-  { icon: "shield", label: "VAT Registered" },
-  { icon: "award", label: "A-Rated Visa Sponsor Licence" },
-];
-
 export const MARQUEE_ITEMS = [
   "Smart Table Ordering",
   "Multiple Kitchen Displays",
@@ -46,10 +39,18 @@ export interface TalkQuestion {
 export const TALK_QUESTIONS: TalkQuestion[] = [
   { n: "01", q: "Which outlet is performing?", icon: "trendUp", tone: "success", answerBold: "Outlet 03", answer: "+18.2%" },
   { n: "02", q: "Which outlet needs attention?", icon: "alert", tone: "gold", answerBold: "Outlet 05", answer: "slow service" },
-  { n: "03", q: "Which table is waiting?", icon: "clock", tone: "brand", answerBold: "Table 12", answer: "4 min" },
-  { n: "04", q: "Which order is late?", icon: "xCircle", tone: "danger", answerBold: "Order #211", answer: "9 min over" },
-  { n: "05", q: "Which customer keeps coming back?", icon: "heart", tone: "brand", answerBold: "A. Mehta", answer: "14 visits" },
+  { n: "03", q: "Average table service time per outlet", icon: "clock", tone: "brand", answerBold: "Outlet 01", answer: "38 min avg" },
+  { n: "04", q: "Number of customers keep coming back per outlet.", icon: "heart", tone: "success", answerBold: "Outlet 03", answer: "318 regulars" },
 ];
+
+/** The fifth tile is not a question — it closes the row. See Talk.tsx. */
+export const TALK_MORE = [
+  "Menu performance",
+  "Peak hours",
+  "Staff & tips",
+  "Wastage & refunds",
+  "Repeat visits",
+] as const;
 
 /* ---------- 03 · Multi-outlet ---------- */
 export interface Outlet {
@@ -203,10 +204,10 @@ export const FLOW_STEPS: FlowStep[] = [
     icon: "monitor",
     label: "Kitchen receives order",
     note: "It lands on the kitchen screen the second it is placed.",
-    photo: "/flow-2.webp",
-    crop: "50% 12%",
-    blur: "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAABQBACdASoMABYAPu1iqU2ppaOiMAgBMB2JQBOmUABflb6I2p+v1/8B8OAwAP7s3pIb88B8GFb5qvmaiRsOzyN8ZH0Z+zH9GROp1qEcQsuKlsI7oYEoToovXyHJgUCKobCwoAAA",
-    alt: "A chef reading a new ticket on the Nova-Restro kitchen display",
+    photo: "/flow-2-print.webp",
+    crop: "50% 55%",
+    blur: "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAAAwBACdASoMABIAPu1iqU2ppaOiMAgBMB2JQBOmUAS1ImedWrZbZIDa6QAA/tGwfLpkGdFoNVp8d3ktCDNzIAvRj7l6pLb1HWwSutoa9+tmWn0+dL5W9slVVSPhw649mW7Rt8WKBVVk6JLnkuPAovf5TAncf9h02NK06jLHharvqTjOZhd05YIPAAA=",
+    alt: "The Nova-Restro kitchen display and ticket printer on the pass, printing a new order",
   },
   {
     icon: "utensils",
@@ -260,6 +261,8 @@ export interface StoryStep {
   /** the caption that rides on the frame */
   tag: string;
   icon: IconName;
+  /** the escalation rule this step enforces — rendered as a blinking alarm chip */
+  alert?: string;
 }
 
 export const STORY_STEPS: StoryStep[] = [
@@ -277,9 +280,9 @@ export const STORY_STEPS: StoryStep[] = [
     n: "02",
     title: "Your kitchen knows instantly.",
     copy: "The ticket lands on the Kitchen Display the moment it's placed — routed to the right station, timed from second one.",
-    photo: "/story-2.webp",
-    blur: "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAAAQAgCdASoOAAsAA4BaJQBOgCKJsUS+gtwAAP7azWSs+P3TPWbVCLte25kDfdYyiuWoqUWNEAAAAA==",
-    alt: "The Nova-Restro Kitchen Display in a working kitchen, tickets colour-coded by elapsed time",
+    photo: "/story-2-kds.webp",
+    blur: "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAAAQAgCdASoOAA4AA4BaJZACdAEe14m4VJBQAP7w5pfpDrtKUEE4te/RgzgKA/gevBrtXV+hL2bbBdtNejqxiUKSWkZpAbQKS+zrPD2GVBYERonI6IMuPK9bB9gdNJW2gOdDwAAA",
+    alt: "The Nova-Restro Kitchen Display and ticket printer on the pass, tickets colour-coded by elapsed time",
     tag: "Kitchen display",
     icon: "kds",
   },
@@ -292,6 +295,7 @@ export const STORY_STEPS: StoryStep[] = [
     alt: "A waiter reading a food-ready alert for Table 18 on their handheld during service",
     tag: "Waiter alert",
     icon: "bell",
+    alert: "Beeps if not attended in 1 min",
   },
   {
     n: "04",
@@ -302,13 +306,14 @@ export const STORY_STEPS: StoryStep[] = [
     alt: "A manager watching the live floor map on a tablet from the restaurant floor",
     tag: "Floor view",
     icon: "building",
+    alert: "Beeps if the waiter has not attended in 5 min",
   },
   {
     n: "05",
     title: "And you know how every outlet is performing.",
     copy: "Every outlet, every metric, live — from wherever you are.",
-    photo: "/story-5.webp",
-    blur: "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADQAQCdASoOAAsAA4BaJYwAApyEq+EZSAD+5mvIt3ZFyLgjA+j37nZsQfZZVZ7pH/viv+7Lduntms8woAA=",
+    photo: "/story-5-owner.webp",
+    blur: "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADQAQCdASoOAAsAA4BaJQAAU7bgJqzR4AD+6ePj9bRjXDqg0puYvCtNlvv4FivBRsHbE6cdDJsppwYF0FQ2omHFWxoABTwxo9GXoOzjFSdgCCMoiMgG7UWbqVZrPP4AAAA=",
     alt: "The Nova-Restro multi-outlet dashboard open on a laptop away from the restaurant",
     tag: "Owner dashboard",
     icon: "barChart",
@@ -327,6 +332,7 @@ export const CUSTOMER_STATS: { icon: IconName; k: string; v: string; s: string }
 /* ---------- 08 · Features ---------- */
 export const FEATURES: { icon: IconName; title: string; copy: string }[] = [
   { icon: "table", title: "Smart Table Ordering", copy: "Guests order from the table. Straight into the system, first time, every time." },
+  { icon: "serving", title: "AI Waiter", copy: "An optional layer that talks to guests about the menu, allergies and pairings — and takes the order." },
   { icon: "grid4", title: "Multiple Kitchen Displays", copy: "Route tickets by station — grill, cold, pass, bar — each screen sees only its own work." },
   { icon: "clock", title: "Real-Time Order Tracking", copy: "Every order timed from placed to served. Late tickets surface themselves." },
   { icon: "bell", title: "Intelligent Notifications", copy: "The right person is told the right thing at the right moment. Nobody chases." },
@@ -368,6 +374,11 @@ export const PLAN_EXTRAS: { icon: IconName; title: string; copy: string }[] = [
     icon: "serving",
     title: "AI Waiter.",
     copy: "Optional intelligence layer — to interact with the customers about menu, allergies etc.",
+  },
+  {
+    icon: "monitor",
+    title: "Hardware.",
+    copy: "Terminals, table devices, kitchen screens and printers. Buy from us or bring your own.",
   },
 ];
 

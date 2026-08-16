@@ -159,6 +159,11 @@ const config: Config = {
         shimmer: {
           to: { transform: "translateX(120%)" },
         },
+        /** an alarm blinking on a chip — the bell, not the whole label */
+        beep: {
+          "0%, 100%": { opacity: "1", transform: "scale(1)" },
+          "50%": { opacity: ".3", transform: "scale(.9)" },
+        },
       },
       animation: {
         marquee: "marquee 34s linear infinite",
@@ -169,6 +174,7 @@ const config: Config = {
         flowY: "flowY 2.6s linear infinite",
         pulseRing: "pulseRing 2s infinite",
         shimmer: "shimmer 1.1s cubic-bezier(.22,1,.36,1)",
+        beep: "beep 1.15s ease-in-out infinite",
       },
     },
   },

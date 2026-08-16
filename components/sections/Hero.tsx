@@ -4,8 +4,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { EASE, riseIn, stagger } from "@/lib/motion";
-import { HERO_META, TRUST_BADGES } from "@/lib/data";
-import useViewportWidth from "@/lib/useViewportWidth";
+import { HERO_META } from "@/lib/data";
 import Button from "@/components/ui/Button";
 import DemoButton from "@/components/demo/DemoButton";
 import Icon from "@/components/ui/Icon";
@@ -29,10 +28,8 @@ function useDesktop() {
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
-  const frameRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const desktop = useDesktop();
-  const vw = useViewportWidth();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -47,36 +44,6 @@ export function Hero() {
   const shotY = useTransform(p, [0, 1], [0, reduced ? 0 : -70]);
   const shotScale = useTransform(p, [0, 1], [1, reduced ? 1 : 1.07]);
   const glowY = useTransform(p, [0, 1], [0, reduced ? 0 : 140]);
-
-  /* ---- the product frame arrives full-window and narrows as you scroll ----
-     Progress runs while the frame's top travels from 88% to 18% of the viewport:
-     it starts edge-to-edge and settles into the page grid on the way down —
-     and opens back out on the way up. */
-  const { scrollYProgress: frameProgress } = useScroll({
-    target: frameRef,
-    offset: ["start 0.88", "start 0.18"],
-  });
-  const fp = useSpring(frameProgress, { stiffness: 110, damping: 26, mass: 0.45 });
-
-  const gutter = vw >= 640 ? 48 : 40;
-  const inset = Math.max(0, vw - gutter);
-  // it settles at 87% of the window — wide enough to stay the page's centrepiece
-  const settled = vw >= 640 ? Math.min(inset, Math.round(vw * 0.87)) : inset;
-  // phones and reduced-motion keep both ends identical: the frame is always
-  // inset, but the style still applies, so no stale inline width can survive
-  // a resize down from a desktop width
-  const opened = vw >= 640 && !reduced ? vw : inset;
-
-  const frameWidth = useTransform(fp, [0, 1], [opened, settled]);
-  const framePad = useTransform(fp, [0, 1], [vw >= 640 ? 20 : 8, vw >= 640 ? 12 : 8]);
-  const frameShadow = useTransform(
-    fp,
-    [0, 1],
-    [
-      "0 60px 120px -40px rgba(11,20,32,.42), 0 18px 44px -20px rgba(11,20,32,.20)",
-      "0 30px 70px -24px rgba(11,20,32,.24), 0 8px 24px -12px rgba(11,20,32,.10)",
-    ],
-  );
 
   return (
     <section id="top" className="relative isolate overflow-hidden bg-canvas">
@@ -241,68 +208,31 @@ export function Hero() {
         </div>
       </div>
 
-      {/* ---------- Credentials strip closing the fold ---------- */}
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, ease: EASE, delay: 0.9 }}
-        className="relative border-y border-edge bg-surface/80 backdrop-blur-[6px]"
-      >
-        <div className="wrap wrap-wide">
-          <ul className="no-bar flex items-center justify-start overflow-x-auto py-[13px] [mask-image:linear-gradient(90deg,#000_90%,transparent)] sm:justify-center sm:[mask-image:none]">
-            {TRUST_BADGES.map((b) => (
-              <li
-                key={b.label}
-                className="group/badge flex flex-none items-center gap-[0.5rem] whitespace-nowrap px-[clamp(16px,2.6vw,40px)] [&+&]:border-l [&+&]:border-edge"
-              >
-                <Icon
-                  name={b.icon}
-                  size={15}
-                  strokeWidth={1.9}
-                  className="flex-none text-muted transition-colors duration-300 group-hover/badge:text-brand-deep"
-                />
-                <span className="text-[0.7rem] font-bold uppercase tracking-[0.13em] text-ink-3">
-                  {b.label}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </motion.div>
-
       {/* ---------- The live product, below the fold ----------
-           The frame starts inset like any other section and widens to the full
-           window as it scrolls into view — and back again on the way up. */}
-      <div ref={frameRef} id="action" className="relative w-full scroll-mt-28">
+           The navy runs the full width of the window; the screen inside it
+           stays in the page grid, centred, at every breakpoint. */}
+      <div id="action" className="relative w-full scroll-mt-28">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.1 }}
           transition={{ duration: 1.1, ease: EASE }}
-          style={
-            vw > 0
-              ? {
-                  width: frameWidth,
-                  // the class caps at the wrap width — the motion value owns it now
-                  maxWidth: "none",
-                  paddingLeft: framePad,
-                  paddingRight: framePad,
-                  boxShadow: frameShadow,
-                }
-              : undefined
-          }
-          className="beam relative mx-auto mt-[clamp(56px,8vw,110px)] w-[calc(100%-40px)] max-w-wrap rounded-none border border-ink-2 bg-ink p-2 shadow-lg [will-change:width] sm:w-[calc(100%-48px)] sm:p-3"
+          className="beam relative mt-[clamp(56px,8vw,110px)] w-full rounded-none border-y border-ink-2 bg-ink px-3 py-3 shadow-[0_40px_90px_-40px_rgba(11,20,32,.34)] sm:px-[clamp(20px,4vw,64px)] sm:py-[clamp(18px,3vw,40px)]"
         >
-          <div className="flex items-center gap-1.5 px-2 pb-2.5 pt-1.5">
-            <i className="block h-[9px] w-[9px] rounded-full bg-[#3B4A63]" />
-            <i className="block h-[9px] w-[9px] rounded-full bg-[#2A3950]" />
-            <i className="block h-[9px] w-[9px] rounded-full bg-[#2A3950]" />
-            <span className="ml-2 rounded-none border border-[#1E2B3F] bg-[#111C2C] px-[0.7rem] py-[0.28rem] font-mono text-[0.62rem] text-[#6B7A93] sm:text-[0.7rem]">
-              app.nova-restro.com/overview
-            </span>
-          </div>
-          <div className="overflow-hidden rounded-none bg-night">
-            <DashboardMock />
+          {/* the screen itself stays centred and readable — the navy may be
+              full-bleed, but the dashboard never stretches past 1600px */}
+          <div className="mx-auto w-full max-w-[1600px]">
+            <div className="flex items-center gap-1.5 px-2 pb-2.5 pt-1.5">
+              <i className="block h-[9px] w-[9px] rounded-full bg-[#3B4A63]" />
+              <i className="block h-[9px] w-[9px] rounded-full bg-[#2A3950]" />
+              <i className="block h-[9px] w-[9px] rounded-full bg-[#2A3950]" />
+              <span className="ml-2 rounded-none border border-[#1E2B3F] bg-[#111C2C] px-[0.7rem] py-[0.28rem] font-mono text-[0.62rem] text-[#6B7A93] sm:text-[0.7rem]">
+                app.nova-restro.com/overview
+              </span>
+            </div>
+            <div className="overflow-hidden rounded-none bg-night">
+              <DashboardMock />
+            </div>
           </div>
         </motion.div>
       </div>

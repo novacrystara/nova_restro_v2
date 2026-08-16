@@ -1,11 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { FLOOR_TABLES, NOTIFICATIONS, type TableState } from "@/lib/data";
 import { EASE, riseIn, viewportOnce } from "@/lib/motion";
-import useViewportWidth from "@/lib/useViewportWidth";
 import { cn } from "@/lib/cn";
 import Reveal, { RevealGroup } from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
@@ -71,44 +69,15 @@ const FLOOR_STATS = [
 ];
 
 export function Floor() {
-  const panelRef = useRef<HTMLDivElement>(null);
-  const reduced = useReducedMotion();
-  const vw = useViewportWidth();
-
-  /* ---- the ink panel arrives inset and opens to the full window ----
-     The mirror of the hero frame, which starts edge-to-edge and narrows.
-     Progress runs while the panel's top travels from 90% to 32% of the
-     viewport; the copy inside is pinned to a fixed width, so only the dark
-     block grows — nothing on it reflows or moves. */
-  const { scrollYProgress } = useScroll({
-    target: panelRef,
-    offset: ["start 0.9", "start 0.32"],
-  });
-  const p = useSpring(scrollYProgress, { stiffness: 110, damping: 26, mass: 0.45 });
-
-  const wide = vw >= 640;
-  // phones and reduced-motion hold both ends at full bleed — the panel simply
-  // never narrows there, so no stale inline width can outlive a resize
-  const narrow = wide && !reduced ? Math.min(vw - 48, Math.round(vw * 0.78)) : vw;
-  const width = useTransform(p, [0, 1], [narrow, vw]);
-  // content width is a constant, derived from the *narrow* end: it fits inside
-  // the panel at every point of the animation and is centred either way
-  const contentMax = Math.min(1240, narrow - (wide ? 40 : 0));
-
   return (
     <section id="floor" className="relative scroll-mt-24">
-      <motion.div
-        ref={panelRef}
-        style={vw > 0 ? { width } : undefined}
-        className="sec relative mx-auto overflow-hidden bg-ink text-white [will-change:width]"
-      >
+      {/* one fixed, full-width ink panel — the copy inside sits in the page
+          grid like every other section */}
+      <div className="sec relative overflow-hidden bg-ink text-white">
         <div className="bg-dots bg-dots-light opacity-50" />
         <div className="glow glow-brand absolute -bottom-60 -left-44 h-[520px] w-[640px] opacity-[0.22]" />
 
-        <div
-          className="wrap relative"
-          style={vw > 0 ? { maxWidth: contentMax } : undefined}
-        >
+        <div className="wrap relative">
           <div className="mb-[clamp(36px,5vw,64px)] max-w-[860px]">
             <Reveal>
               <Eyebrow onDark>04 — Intelligent notifications</Eyebrow>
@@ -117,6 +86,12 @@ export function Floor() {
               <h2 className="t-h1 mt-[1.1rem] text-white">
                 Your manager shouldn&apos;t be a <span className="text-brand-light">human notification system.</span>
               </h2>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <p className="lead mt-[1.4rem] max-w-[54ch] text-white/70">
+                Your manager spends the shift walking the floor to find out what is happening.
+                Nova-Restro watches it instead, and tells them the moment they are needed.
+              </p>
             </Reveal>
           </div>
 
@@ -294,12 +269,117 @@ export function Floor() {
                   </div>
                   <figcaption className="absolute inset-x-0 bottom-0 flex items-center gap-[0.55rem] p-[1rem_1.15rem] text-[0.72rem] font-semibold text-white/75">
                     <span className="h-[6px] w-[6px] flex-none rounded-full bg-live-attention shadow-[0_0_8px_#FBBF24]" />
-                    Told, not asked — the floor comes to the manager
+                    The alert reaches the manager — nobody has to go and check
                   </figcaption>
                 </figure>
               </Reveal>
             </div>
           </div>
+
+          {/* ---- what the manager does with the time ----
+               The room on the left dissolves into the ink on its right edge —
+               the same treatment the manifesto uses — so the copy reads over
+               flat colour while the table stays a photograph. */}
+          <Reveal>
+            <div className="relative mt-[clamp(40px,5vw,64px)] overflow-hidden border border-white/[0.12] bg-ink">
+              {/* lg and up: the photograph bleeds off the left of the panel */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 left-0 hidden w-[60%] lg:block xl:w-[58%]"
+              >
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    WebkitMaskImage:
+                      "linear-gradient(270deg, transparent 0%, rgba(0,0,0,.35) 16%, rgba(0,0,0,.85) 34%, #000 50%)",
+                    maskImage:
+                      "linear-gradient(270deg, transparent 0%, rgba(0,0,0,.35) 16%, rgba(0,0,0,.85) 34%, #000 50%)",
+                  }}
+                >
+                  <Image
+                    src="/manager-guest-hd.webp"
+                    alt=""
+                    fill
+                    /* The photograph is 2.7:1 and this box is ~1.25:1, so
+                       object-cover fills by HEIGHT and throws away most of the
+                       width. The candidate therefore has to be ~2.2× the box
+                       width (62vw × 2.2 ≈ 135vw) or the browser upscales a
+                       too-short file — which is exactly what made it look
+                       soft. Below lg it is display:none, hence the 5vw. */
+                    sizes="(min-width: 1024px) 135vw, 5vw"
+                    quality={90}
+                    placeholder="blur"
+                    blurDataURL="data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAAAQAgCdASoQAAYAA4BaJQBOgCILlLIyvt0AAP7xHm0dQa3vpuFG+xKRBizibZHKsNE4I4DqnhjYTwZMsoAAAA=="
+                    className="object-cover object-[18%_50%]"
+                  />
+                  {/* three ink washes: the seam, the top and the floor */}
+                  <div className="absolute inset-y-0 right-0 w-[46%] bg-gradient-to-l from-ink via-ink/55 to-transparent" />
+                  <div className="absolute inset-x-0 top-0 h-[24%] bg-gradient-to-b from-ink to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 h-[28%] bg-gradient-to-t from-ink to-transparent" />
+                </div>
+              </div>
+
+              {/* below lg the photograph can't sit beside the copy, so it takes
+                  its own frame above it and fades into the panel */}
+              <div className="relative aspect-[16/9] w-full sm:aspect-[2/1] lg:hidden">
+                <Image
+                  src="/manager-guest-hd.webp"
+                  alt="A floor manager stopping at a table mid-service, talking with a regular guest"
+                  fill
+                  // same reasoning as the desktop frame: a 16/9 window onto a
+                  // 2.7:1 photograph needs ~1.55× the box width
+                  sizes="(min-width: 1024px) 5vw, 155vw"
+                  quality={90}
+                  placeholder="blur"
+                  blurDataURL="data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAAAQAgCdASoQAAYAA4BaJQBOgCILlLIyvt0AAP7xHm0dQa3vpuFG+xKRBizibZHKsNE4I4DqnhjYTwZMsoAAAA=="
+                  className="object-cover object-[22%_50%]"
+                />
+                <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-ink to-transparent" />
+              </div>
+
+              <div className="relative grid lg:grid-cols-2">
+                {/* the photograph's half of the panel on lg */}
+                <div aria-hidden className="hidden lg:block" />
+
+                <div className="p-[clamp(22px,3.4vw,52px)] lg:py-[clamp(40px,4.6vw,72px)] lg:pr-[clamp(28px,3.6vw,56px)]">
+                  <Eyebrow onDark>The manager, freed up</Eyebrow>
+
+                  <h3 className="t-h3 mt-[1.1rem] max-w-[22ch] text-white">
+                    Your manager treats your guests{" "}
+                    <span className="text-brand-light">like their own.</span>
+                  </h3>
+
+                  <p className="mt-[1.1rem] max-w-[46ch] text-[0.95rem] leading-[1.65] text-white/70">
+                    Told what needs them, they stop walking the floor collecting updates and start
+                    doing the part software cannot: standing at the table, remembering the name,
+                    reading the room.
+                  </p>
+
+                  <ul className="mt-[1.5rem] grid gap-[0.7rem] border-t border-white/10 pt-[1.4rem]">
+                    {[
+                      "Greeted by name, not by table number",
+                      "There before a guest has to raise a hand",
+                      "Every visit remembered, across every outlet",
+                    ].map((l) => (
+                      <li key={l} className="flex items-start gap-[0.7rem]">
+                        <span
+                          aria-hidden
+                          className="mt-[0.5rem] h-[5px] w-[5px] flex-none rounded-full bg-brand-light shadow-[0_0_8px_rgba(251,146,60,.8)]"
+                        />
+                        <span className="text-[0.88rem] font-semibold leading-[1.5] text-white/85">
+                          {l}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <p className="mt-[1.6rem] text-[0.72rem] font-bold uppercase tracking-[0.16em] text-white/45">
+                    That is what a regular is made of
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Reveal>
 
           <Reveal>
             <div className="mt-[clamp(40px,5vw,64px)] grid items-center gap-8 border-t border-white/10 pt-[clamp(32px,4vw,48px)] md:grid-cols-[1fr_auto]">
@@ -319,7 +399,7 @@ export function Floor() {
             </div>
           </Reveal>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
