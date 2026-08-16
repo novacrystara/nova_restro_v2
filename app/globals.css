@@ -1,0 +1,406 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   NOVA-RESTRO — tokens
+   ============================================================ */
+:root {
+  /* brand — orange */
+  --brand: #ea580c;
+  --brand-hi: #f97316;
+  --brand-deep: #c2410c;
+  --brand-light: #fb923c;
+  --brand-wash: #ffedd5;
+  --brand-mist: #fff7ed;
+
+  /* accent — amber */
+  --gold: #e8a33d;
+  --gold-deep: #8a5d0c;
+  --gold-wash: #fcf0dc;
+
+  /* ink — deep navy */
+  --ink: #0b1420;
+  --ink-2: #16233a;
+  --ink-3: #2a3950;
+  --body: #55627a;
+  --muted: #79839a;
+
+  /* surfaces — white */
+  --bg: #fafafa;
+  --bg-2: #f2f2f2;
+  --surface: #ffffff;
+  --surface-2: #fafafa;
+
+  --edge: #e6e6e6;
+  --edge-2: #d4d4d4;
+
+  --success: #6b8f5e;
+  --destructive: #a3321f;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.55;
+  }
+
+  /* Poppins is a geometric face — it sets wider than a grotesque, so the
+     display tracking is looser here than it would be for Inter. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    letter-spacing: -0.022em;
+    line-height: 1.06;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  ::selection {
+    background: var(--brand);
+    color: #fff;
+  }
+
+  /* Lenis smooth scroll */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  /* focus ring — sharp, on-brand */
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* ---- Layout ---- */
+  .wrap {
+    width: 100%;
+    max-width: 1240px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 640px) {
+    .wrap {
+      padding-inline: 24px;
+    }
+  }
+  .wrap-wide {
+    max-width: 1420px;
+  }
+  .sec {
+    position: relative;
+    /* the rhythm between sections — tightened from 152px, which left the page
+       reading as a stack of islands rather than one document */
+    padding-block: clamp(54px, 7vw, 104px);
+  }
+
+  /* ---- Type scale ---- */
+  .display {
+    font-size: clamp(2.2rem, 5.6vw, 4.9rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+  }
+  .t-h1 {
+    font-size: clamp(1.85rem, 4.5vw, 3.85rem);
+    font-weight: 700;
+    letter-spacing: -0.028em;
+    line-height: 1.08;
+  }
+  .t-h2 {
+    font-size: clamp(1.6rem, 3.3vw, 2.9rem);
+    font-weight: 700;
+    letter-spacing: -0.026em;
+    line-height: 1.12;
+  }
+  .t-h3 {
+    font-size: clamp(1.25rem, 2.05vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+  }
+  .lead {
+    font-size: clamp(1rem, 1.45vw, 1.3rem);
+    color: var(--body);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /*
+     Highlighter marker behind text — the brand orange. Deep-navy text on
+     #EA580C is 5.2:1, so the headline stays readable with the primary
+     colour doing the work.
+  */
+  .hl {
+    background: linear-gradient(
+      180deg,
+      transparent 58%,
+      var(--brand) 58%,
+      var(--brand) 94%,
+      transparent 94%
+    );
+    padding-inline: 0.08em;
+  }
+
+  /* ---- Decorative backgrounds ---- */
+  .bg-dots {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(var(--edge-2) 1.15px, transparent 1.15px);
+    background-size: 22px 22px;
+    -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 45%, #000 10%, transparent 75%);
+    mask-image: radial-gradient(ellipse 60% 55% at 50% 45%, #000 10%, transparent 75%);
+    opacity: 0.6;
+  }
+  .bg-dots-light {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.16) 1px, transparent 1px);
+  }
+  .bg-dots-brand {
+    background-image: radial-gradient(rgba(251, 146, 60, 0.5) 1px, transparent 1px);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  .glow-brand {
+    background: radial-gradient(circle, rgba(234, 88, 12, 0.5), transparent 68%);
+  }
+  .glow-gold {
+    background: radial-gradient(circle, rgba(232, 163, 61, 0.55), transparent 68%);
+  }
+
+  /* ---- Spotlight card (mouse-follow) ---- */
+  .spot::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s var(--ease);
+    z-index: 0;
+    background: radial-gradient(
+      320px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(234, 88, 12, 0.14),
+      transparent 62%
+    );
+  }
+  .spot:hover::before {
+    opacity: 1;
+  }
+  .spot > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---- Animated conic border beam (hero frame) ---- */
+  .beam::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    padding: 1px;
+    pointer-events: none;
+    background: conic-gradient(
+      from var(--beam, 0turn),
+      transparent 0 72%,
+      var(--brand-light) 82%,
+      transparent 92%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: beam 7s linear infinite;
+  }
+
+  /* ---- Gradient hairline border (pricing plan) ---- */
+  .plan-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    pointer-events: none;
+    background: linear-gradient(
+      135deg,
+      var(--brand),
+      transparent 40%,
+      transparent 60%,
+      rgba(234, 88, 12, 0.55)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  /*
+     ---- Bento cell outline ----
+     `border-style: dashed` hands the dash length to the browser, and it draws
+     them small. These are backgrounds instead, so the dash and the gap are
+     ours to set — and the whole outline can shift to brand on hover.
+  */
+  .dash-cell {
+    --dash-color: rgba(11, 20, 32, 0.28);
+    --dash-len: 7px;
+    --dash-gap: 5px;
+    --dash-w: 1.25px;
+    --dash-x: repeating-linear-gradient(
+      90deg,
+      var(--dash-color) 0 var(--dash-len),
+      transparent var(--dash-len) calc(var(--dash-len) + var(--dash-gap))
+    );
+    --dash-y: repeating-linear-gradient(
+      180deg,
+      var(--dash-color) 0 var(--dash-len),
+      transparent var(--dash-len) calc(var(--dash-len) + var(--dash-gap))
+    );
+    background-image: var(--dash-x), var(--dash-x), var(--dash-y), var(--dash-y);
+    background-size:
+      100% var(--dash-w),
+      100% var(--dash-w),
+      var(--dash-w) 100%,
+      var(--dash-w) 100%;
+    background-position:
+      0 0,
+      0 100%,
+      0 0,
+      100% 0;
+    background-repeat: no-repeat;
+    transition:
+      --dash-color 0.35s var(--ease),
+      background-color 0.35s var(--ease);
+  }
+  .dash-cell:hover {
+    --dash-color: rgba(234, 88, 12, 0.55);
+  }
+
+  /*
+     ---- Brand range slider ----
+     The track is painted with a gradient stop at --fill (set inline from the
+     value), because a native range gives you no way to colour the run behind
+     the thumb.
+  */
+  .rng {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 26px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .rng::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 0;
+    background: linear-gradient(
+      90deg,
+      var(--brand) 0 var(--fill, 50%),
+      var(--edge) var(--fill, 50%) 100%
+    );
+  }
+  .rng::-moz-range-track {
+    height: 6px;
+    border-radius: 0;
+    background: linear-gradient(
+      90deg,
+      var(--brand) 0 var(--fill, 50%),
+      var(--edge) var(--fill, 50%) 100%
+    );
+  }
+  .rng::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    margin-top: -7px;
+    border-radius: 9999px;
+    background: #fff;
+    border: 3px solid var(--brand);
+    box-shadow: 0 2px 8px rgba(11, 20, 32, 0.18);
+    transition:
+      transform 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+  .rng::-moz-range-thumb {
+    height: 20px;
+    width: 20px;
+    border-radius: 9999px;
+    background: #fff;
+    border: 3px solid var(--brand);
+    box-shadow: 0 2px 8px rgba(11, 20, 32, 0.18);
+  }
+  .rng:hover::-webkit-slider-thumb,
+  .rng:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 6px rgba(234, 88, 12, 0.16);
+  }
+  .rng:focus-visible {
+    outline: none;
+  }
+
+  /* ---- Scrollbar-free horizontal scrollers ---- */
+  .no-bar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-bar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@property --beam {
+  syntax: "<angle>";
+  initial-value: 0turn;
+  inherits: false;
+}
+@keyframes beam {
+  to {
+    --beam: 1turn;
+  }
+}
+
+/* registered so the bento outline can *transition* between its two colours —
+   an unregistered custom property would snap */
+@property --dash-color {
+  syntax: "<color>";
+  initial-value: rgba(11, 20, 32, 0.28);
+  inherits: false;
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
